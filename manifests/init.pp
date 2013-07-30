@@ -134,6 +134,9 @@
 # [*gzip*]
 #   Specified the gzip function of nginx 'on' or 'off'. Deault is 'on',
 #
+# [*fpm*]
+#   Install php5-fpm. Default is false
+#
 # [*worker_connections*]
 #   Specified worker connections number. Default is 1024.
 #
@@ -213,6 +216,7 @@
 #
 class nginx (
   $gzip                = params_lookup( 'gzip' ),
+  $fpm                 = params_lookup( 'fpm' ),
   $worker_connections  = params_lookup( 'worker_connections' ),
   $keepalive_timeout   = params_lookup( 'keepalive_timeout' ),
   $client_max_body_size  = params_lookup( 'client_max_body_size' ),
@@ -257,6 +261,7 @@ class nginx (
   $protocol            = params_lookup( 'protocol' )
   ) inherits nginx::params {
 
+  $bool_fpm=any2bool($fpm)
   $bool_source_dir_purge=any2bool($source_dir_purge)
   $bool_service_autorestart=any2bool($service_autorestart)
   $bool_absent=any2bool($absent)
@@ -328,6 +333,12 @@ class nginx (
     $manage_firewall = false
   } else {
     $manage_firewall = true
+  }
+  
+  if $bool_fpm == true {
+    package { 'php5-fpm':
+      ensure  => installed,
+    }
   }
 
   $manage_audit = $nginx::bool_audit_only ? {
