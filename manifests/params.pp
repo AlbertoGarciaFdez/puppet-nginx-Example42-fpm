@@ -15,6 +15,7 @@
 class nginx::params {
 
   $gzip = 'on'
+  $fpm = 'false'
   $worker_connections = 1024
   $keepalive_timeout = 65
   $client_max_body_size = '10m'
