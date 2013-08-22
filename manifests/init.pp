@@ -134,9 +134,6 @@
 # [*gzip*]
 #   Specified the gzip function of nginx 'on' or 'off'. Deault is 'on',
 #
-# [*fpm*]
-#   Install php5-fpm. Default is false
-#
 # [*worker_connections*]
 #   Specified worker connections number. Default is 1024.
 #
@@ -335,12 +332,6 @@ class nginx (
     $manage_firewall = true
   }
   
-  if $bool_fpm == true {
-    package { 'php5-fpm':
-      ensure  => installed,
-    }
-  }
-
   $manage_audit = $nginx::bool_audit_only ? {
     true  => 'all',
     false => undef,

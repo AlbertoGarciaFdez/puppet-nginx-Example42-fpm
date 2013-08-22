@@ -2,7 +2,7 @@
 
 server {
   listen <%= @port %>;
-  root <%= @root %>;
+  root <%= @docroot %>;
   server_name <%= @name %> <%= @serveraliases%>;
 
   access_log  <%= scope.lookupvar('nginx::log_dir')%>/<%= @name %>.access.log;
